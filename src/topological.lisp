@@ -1,6 +1,6 @@
 (defpackage :topological
   (:use :cl :alexandria :iterate)
-  (:export top-sort-kahn))
+  (:export top-sort-kahn top-sort-dfs))
 
 (in-package :topological)
 
@@ -41,17 +41,6 @@
 (defun top-sort-kahn (graph)
   (kahn (nodes-with-no-incoming-edge graph) (copy-alist graph)))
 
-(defparameter *graph* '((5 . (2 0))
-			(4 . (0 1))
-			(2 . (3))
-			(3 . (1))))
-
-(defparameter *graph-2* '((5 . (11))
-			  (7 . (11 8))
-			  (3 . (8 10))
-			  (11 . (2 9 10))
-			  (8 . (9))))
-
 ;; DFS
 (defparameter *visited* nil)
 
@@ -65,7 +54,7 @@
     (iter
       (for n :in (adjacent graph node))
       (dfs n graph))
-    (setq *visited* (cons node *visited*))))
+    (push node *visited*)))
 
 (defun top-sort-dfs (graph)
   (let ((*visited* nil))
