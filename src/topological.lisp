@@ -42,25 +42,18 @@
   (kahn (nodes-with-no-incoming-edge graph) (copy-alist graph)))
 
 ;; DFS
-(defparameter *visited* nil)
-
 (defun all-nodes (graph)
   (let* ((keyz (mapcar #'car graph))
 	 (vals (mappend #'cdr graph)))
     (remove-duplicates (append keyz vals))))
 
-(defun dfs (node graph)
-  (when (not (member node *visited*))
-    (iter
-      (for n :in (adjacent graph node))
-      (dfs n graph))
-    (push node *visited*)))
+(defun dfs (node graph visited)
+  (when (not (member node visited))
+    (cons node (mappend (lambda (n) (dfs n graph visited)) (adjacent graph node)))))
 
-(defun top-sort-dfs (graph)
-  (let ((*visited* nil))
-    (iter
-      (with nodes = (all-nodes graph))
-      (for selected = (set-difference nodes *visited*))
-      (while selected)
-      (dfs (car selected) graph))
-    *visited*))
+(defun top-sort-dfs (graph &optional result)
+  (let* ((nodes (all-nodes graph))
+	 (selected (set-difference nodes result)))
+    (if selected
+	(top-sort-dfs graph (append (dfs (car selected) graph result) result))
+	result)))
