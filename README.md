@@ -8,5 +8,3 @@ https://en.wikipedia.org/wiki/Topological_sorting
 
 
 ![Graph](https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Directed_acyclic_graph_2.svg/270px-Directed_acyclic_graph_2.svg.png)
-
-![Graph](https://media.geeksforgeeks.org/wp-content/cdn-uploads/graph.png)
